@@ -1,0 +1,78 @@
+<div class="w3-container">
+<!-- Demographics style stolen from labinthewild.org experiments -->
+
+<h3> Bonus </h3>
+<div id="table" class="w3-table"> </div>
+
+</div>
+<!-- <button id="next-button" type="button">Next</button>
+ -->
+
+
+<script> 
+(function() {
+  var data = {};
+  experimentr.startTimer('bonus');
+  experimentr.release();
+  
+  document.getElementById('next-button').style.display="block"
+  d3.select("#next-button").style("visibility","visible")
+
+
+  d3.select('#next-button')
+		.on('click', function(){
+			experimentr.endTimer('bonus');
+			experimentr.addData(data);
+			experimentr.next(); });
+
+  
+  var table = d3.select('#table')
+      .append('table')
+      
+  var tr = table.append('tr');
+  tr.append('th').html();
+
+  experimentr.getBonuses().forEach(function(d, i){
+    console.log("index is ",i)
+    tr = table.append('div');
+    if (experimentr.getData().loadCondition=="load"){
+          if (i==3){
+              tr.html('$'+d+ '&nbsp&nbsp&nbsp&nbsp    <b>' + 'Reasoning Study ');
+          }
+          else if (i==4){
+              tr.html('$'+d+ '&nbsp&nbsp&nbsp&nbsp    <b>'  + 'Dot Pattern Memory Task ');
+          }
+          else if (i==6){
+              tr.html('$'+d+ '&nbsp&nbsp&nbsp&nbsp    <b>' +'Cognitive Reflection Test');
+          }
+          else if (i==8){
+              tr.html('$'+d+ '&nbsp&nbsp&nbsp&nbsp    <b>' +'Spatial Ability Test - Part I');
+          }
+          else if (i==10){
+              tr.html('$'+d+ '&nbsp&nbsp&nbsp&nbsp    <b>' +'Spatial Ability Test - Part II');
+          }
+    }
+    if (experimentr.getData().loadCondition=="no_load"){
+          if (i==2){
+              tr.html('$'+d+ '&nbsp&nbsp&nbsp&nbsp    <b>' + 'Reasoning Study ');
+          }
+          else if (i==4){
+              tr.html('$'+d+ '&nbsp&nbsp&nbsp&nbsp    <b>' +'Cognitive Reflection Test');
+          }
+          else if (i==6){
+              tr.html('$'+d+ '&nbsp&nbsp&nbsp&nbsp    <b>' +'Spatial Ability Test - Part I');
+          }
+          else if (i==8){
+              tr.html('$'+d+ '&nbsp&nbsp&nbsp&nbsp    <b>' +'Spatial Ability Test - Part II');
+          }
+    }
+    // tr.html('Sheet ' + (i+1) + ' &nbsp&nbsp&nbsp&nbsp     <b>$' + (d/100).toFixed(2) + '</b>');
+  });
+
+  tr = table.append('div');
+  tr.html('<h3>$' + experimentr.getBonus() + '</h3>');
+  
+  
+
+}());
+</script>

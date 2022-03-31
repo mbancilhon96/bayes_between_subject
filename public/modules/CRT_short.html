@@ -1,0 +1,136 @@
+<div id="directions">
+
+
+<h1>Cognitive Reflection Test</h1>
+
+<p id="question"></p>
+
+<input type="number" id="ans">
+
+
+<br>
+<br>
+
+
+<button id="start" type="button" class="nextButton">Next</button>
+</p>
+</div>
+
+<div id="questionNum_displayContainer">
+<h2  id="questionNum_display" style="text-align:center; color:darkgrey">
+1 out of 6
+</h2>
+</div>
+<!-- <div class="container progress-container">
+  <div class="progress-holder">
+    <div class="progress" id="progress"></div>
+  </div>
+</div>
+ -->
+
+<style>
+        #images {
+                
+        }
+</style>
+
+<script>
+var scoreIntuitive=0
+var scoreCorrect=0
+var questionNum=0
+var data={}
+
+var questions=[
+"A bat and a ball cost $1.10 in total. The bat costs a dollar more than the ball. How much does the ball cost?",
+"If it takes 5 machines 5 min to make 5 widgets, how long would it take 100 machines to make 100 widgets?",
+"In a lake, there is a patch of lily pads. Every day, the patch doubles in size. If it takes 48 days for the patch to cover the entire lake, how long would it take for the patch to cover half of the lake?"
+]
+var ans_unit=[
+"cents",
+"min",
+"days"
+]
+// var answers_intuitive=[
+// "6",
+// "20",
+// "9",
+// "30",
+// "10",
+// "b"
+// ]
+var answers_correct=[
+"5",
+"5",
+"47"
+]
+var user_answers=[]
+var CRT_bonus
+
+console.log("CRT sequence is ",experimentr.get_sequence())
+
+d3.select('#next-button').style("display","none")
+d3.select('#next-button').style("visibility","hidden")
+
+document.getElementById("question").innerHTML= questions[questionNum]
+
+// document.getElementById("progress").setAttribute("style","width: 0%")
+// var increment=100/(questions.length-1)
+
+d3.select('#start').on('click', function(){
+    console.log("questionNum is ",questionNum)
+
+
+    var ans=document.getElementById("ans").value
+    document.getElementById("ans").innerHTML=ans_unit[questionNum]
+
+    if (ans==""){
+        alert("Please answer the question before moving on.");
+    }
+    else{
+        questionNum++
+        document.getElementById("questionNum_display").innerHTML= questionNum+1 +" out of 3"
+        document.getElementById("question").innerHTML= questions[questionNum]
+
+        user_answers.push(ans)
+        data['CRT_q'+questionNum]=ans
+        document.getElementById("ans").value=""
+
+        if (questionNum==questions.length){
+            getScore()
+            data['scoreCorrect']=scoreCorrect
+            console.log("data is ",data)
+            experimentr.addData(data)
+            experimentr.next()
+            
+        }   
+    }
+    //increment progress bar
+    // var width= String(document.getElementById("progress").style.width)
+    // console.log("width is ",width)
+    // var newWidth=String((parseInt(width)+increment))+"%"
+    // console.log("newWidth is ",newWidth)
+    // document.getElementById("progress").setAttribute("style",`width:${newWidth}`)        
+}) 
+
+//compare answers to intuitive and correct
+
+function getScore(){
+    console.log("user answers is ",user_answers)
+    for (i in user_answers){
+        console.log("answer correct is ", answers_correct[i])
+        if (user_answers[i]==answers_correct[i]){
+            scoreCorrect++
+        }
+    }
+    console.log("load condition is ",experimentr.getData().loadCondition)
+
+    CRT_bonus=0.25*scoreCorrect
+
+    console.log("CRT BONUS IS ",CRT_bonus)
+    experimentr.addBonuses(CRT_bonus,experimentr.get_currentId())
+    experimentr.addBonus(CRT_bonus)
+    console.log("DATA IS ",experimentr.getData())
+
+}
+
+</script>
